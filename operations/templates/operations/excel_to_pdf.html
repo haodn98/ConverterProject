@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Excel to PDF{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url "operations:excel_to_pdf" %}" method="post" enctype="multipart/form-data"
+              class="form-horizontal form-bordered">
+            {% csrf_token %}
+            <label for="formFile" class="form-label">Excel file to PDF</label>
+            <div class="input-group">
+                <input type="file" class="form-control" id="formExcelFile" name="formExcelFile"
+                       aria-describedby="inputGroupFileAddon04"
+                       aria-label="Upload">
+                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Convert</button>
+            </div>
+        </form>
+    </div>
+
+    
+    
+{% endblock %}

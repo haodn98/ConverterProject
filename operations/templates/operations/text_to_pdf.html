@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Doc to PDF{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url "operations:text_to_pdf" %}" method="post" enctype="multipart/form-data"
+              class="form-horizontal form-bordered">
+            {% csrf_token %}
+            <label for="formFile" class="form-label">Doc file to PDF </label>
+            <div class="input-group">
+                <input type="file" class="form-control" id="formDocFile" name="formDocFile"
+                       aria-describedby="inputGroupFileAddon04"
+                       aria-label="Upload">
+                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Convert</button>
+            </div>
+        </form>
+    </div>
+
+
+
+{% endblock %}
