@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.3/getting-started/introduction/">
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1 class="display-3">Welcome, {{ new_user.username }}</h1>
+    <p class="lead"><strong>Account was created successfully </strong> You can login now </p>
+    <hr>
+    <p class="lead">
+        <a class="btn btn-primary btn-sm" href="{% url "authentication:login_view" %}" role="button">Log in</a>
+    </p>
+</div>
+</body>
+</html>
