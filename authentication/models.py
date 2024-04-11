@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.utils.timezone import datetime
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
@@ -33,7 +35,7 @@ class UserType(models.TextChoices):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    id = models.BigAutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.TextField(unique=True, max_length=100)
     email = models.EmailField(unique=True, max_length=320)
     first_name = models.TextField(max_length=100, default=" ")

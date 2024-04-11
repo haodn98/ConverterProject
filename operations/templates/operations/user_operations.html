@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %} Operations list {% endblock title %}
+{% block content %}
+    <h1>Operations list</h1>
+    <div class="row">
+        <div class="col-md-8 mx-auto my-3">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>Format from</th>
+                    <th>Format to</th>
+                    <th>Date</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for object in page_obj %}
+                    <tr>
+                        <td>
+                            {{ object.id }}
+                        </td>
+                        <td>{{ object.format_from }}</td>
+                        <td>{{ object.format_to }}</td>
+                        <td>{{ object.operation_date }}</td>
+                            <td>
+                                <a href="{% url "operations:operations_download" pk=object.pk %}">
+                                    <button type="submit" class="btn btn-success">Download</button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'operations:operations_delete' pk=object.pk %}">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </a>
+                            </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li>
+                {% if page_obj.has_previous %}
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span></a>
+                {% endif %}
+            </li>
+            {% for page in page_obj.paginator.page_range %}
+
+                <li class="{% if page == page_obj.number %} active {% endif %}">
+                    <a class="page-link" href="?page={{ page }}">{{ page }}
+                    </a>
+                </li>
+            {% endfor %}
+            <li>
+                {% if page_obj.has_next %}
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo</span>
+                    </a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
+
+{% endblock content %}

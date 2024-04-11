@@ -1,7 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+
 from authentication.forms import UserLoginForm, UserRegistrationForm
+from authentication.models import CustomUser, UserType
+from authentication.utils import Utils
 
 
 # Create your views here.
@@ -29,12 +35,27 @@ def signup_view(request):
             new_user = form.save(commit=False)
             new_user.set_password(form.cleaned_data['password'])
             new_user.save()
+            Utils.send_verification_email(get_current_site(request), new_user)
             return render(request, 'authentication/signup_done.html')
         return render(request, 'authentication/signup.html', {'form': form})
     form = UserRegistrationForm()
     return render(request, 'authentication/signup.html', {'form': form})
 
+
 def logout_view(request):
     logout(request)
     messages.success(request, "User was logged out")
     return redirect('home')
+
+
+def email_verify(request, uidb64):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+    if user is not None:
+        user.is_verified = True
+        user.user_type = UserType.BASIC
+        user.save()
+    return render(request, 'authentication/verification_done.html',{"username":user.username})

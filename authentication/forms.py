@@ -18,11 +18,13 @@ class UserLoginForm(forms.Form):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         if username and password:
-            qs = CustomUser.objects.filter(username=username)
-            if not qs.exists():
+            qs = CustomUser.objects.filter(username=username).first()
+            if not qs:
                 raise forms.ValidationError("User does not exist")
-            if not check_password(password, qs[0].password):
+            if not check_password(password, qs.password):
                 raise forms.ValidationError("Wrong password")
+            if not qs.is_verified:
+                raise forms.ValidationError("User is not verified")
             user = authenticate(username=username, password=password)
             if not user:
                 raise forms.ValidationError("User is not active ")
@@ -48,7 +50,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ('username',)
+        fields = ('username', 'email')
 
     def clean_username(self, *args, **kwargs):
         username = self.cleaned_data.get('username')
@@ -66,7 +68,7 @@ class UserRegistrationForm(forms.ModelForm):
         email = self.cleaned_data.get('email')
         qs = CustomUser.objects.filter(email=email)
         if qs:
-            raise forms.ValidationError("User with such username already exists")
+            raise forms.ValidationError("User with such email already exists")
         return email
 
     def clean_password2(self, *args, **kwargs):

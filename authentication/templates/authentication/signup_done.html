@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <title>Registration</title>
     <link rel="stylesheet" href="https://getbootstrap.com/docs/4.3/getting-started/introduction/">
+
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
 </head>
 <body>
-<div class="jumbotron text-center">
-    <h1 class="display-3">Welcome, {{ new_user.username }}</h1>
-    <p class="lead"><strong>Account was created successfully </strong> You can login now </p>
-    <hr>
-    <p class="lead">
-        <a class="btn btn-primary btn-sm" href="{% url "authentication:login_view" %}" role="button">Log in</a>
-    </p>
-</div>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-6 col-sm-offset-3">
+                <br>
+                <h2 style="color:rgba(173,0,0,0)">Success</h2>
+                <h3>Welcome!, {{ new_user.username }}</h3>
+                <p style="font-size:20px;color:#5C5C5C;">Account was created successfully. Verification letter was sent to
+                    your email </p>
+                <a href="{% url "home" %}" class="btn btn-success">     Home     </a>
+                <br><br>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>

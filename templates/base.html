@@ -8,8 +8,6 @@
 
     <!--Template based on URL below-->
     <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
-
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           crossorigin="anonymous">
 </head>
@@ -23,30 +21,44 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    Files
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="{% url "operations:text_to_pdf" %}">Text Files</a>
-                    <li><a class="dropdown-item" href="{% url "operations:excel_to_pdf" %}">Excel Files</a>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "operations:presentation_to_pdf" %}">Presentations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "operations:image_to_pdf" %}">Images</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "authentication:logout_view" %}">Logout</a>
-            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Files
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url "operations:text_to_pdf" %}">Text Files</a>
+                        <li><a class="dropdown-item" href="{% url "operations:excel_to_pdf" %}">Excel Files</a>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "operations:presentation_to_pdf" %}">Presentations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "operations:image_to_pdf" %}">Images</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url "operations:operations_list" %}">Operations</a>
+                        <li><a class="dropdown-item" href="#">Settings</a>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "authentication:logout_view" %}">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "authentication:login_view" %}">Login</a>
+                </li>
+            {% endif %}
         </ul>
-    </div>
     </div>
 </nav>
 
