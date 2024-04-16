@@ -1,3 +1,5 @@
+import os
+
 import pythoncom
 from docx2pdf import convert as converter_doc
 from win32com import client
@@ -12,7 +14,7 @@ class Utils:
         pythoncom.CoInitialize()
         converter_doc(file, f"output/")
 
-    #need to fix
+    # need to fix
     @staticmethod
     def excel_to_pdf_conv(file):
         pythoncom.CoInitialize()
@@ -33,3 +35,10 @@ class Utils:
         filename = file.replace("files/", "").split(".")[0]
         with open(f"output/{filename}.pdf", "wb") as f:
             f.write(image_converter(file))
+
+    @staticmethod
+    def extensions_check(file_name, allowed_extensions):
+        file_extension = os.path.splitext(file_name)[1]
+        if file_extension not in allowed_extensions:
+            raise TypeError(f"Wrong format! Please use {', '.join(allowed_extensions)} formats")
+        return file_extension

@@ -25,3 +25,4 @@ class Utils:
                 'email_body': email_body,
                 'email_subject': "Email verification"}
         Utils.email_sender(data)
+

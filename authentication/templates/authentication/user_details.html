@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User Settings </title>
+
+    <!--Template based on URL below-->
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+</head>
+
+{% block content %}
+    <div class="content-header">
+        <div class="header-section">
+            <h1>
+                <i class="fa fa-table"></i>User profile<br><small>Settings</small>
+            </h1>
+        </div>
+    </div>
+    <ul class="breadcrumb breadcrumb-top">
+        <li>News</li>
+        <li><a href="#">Settings</a></li>
+    </ul>
+    <div class="row">
+        <!-- Basic Form Elements Block -->
+        <div class="block">
+            <!-- Basic Form Elements Title -->
+            <!-- Basic Form Elements Content -->
+            <form action="#" method="post" enctype="multipart/form-data"
+                  class="form-horizontal form-bordered">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Username" id="username"
+                               name="username" value="{{ object.username }}">
+                    </div>
+                    <div class="col-md-6">
+
+                        <input type="text" class="form-control" placeholder="Email" id="email"
+                               name="email" value="{{ object.email }}">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="First Name" id="first_name"
+                               name="first_name" value="{{ object.first_name }}">
+                    </div>
+                    <div class="col-md-6">
+
+                        <input type="text" class="form-control" placeholder="Last Name" id="last_name"
+                               name="last_name" value="{{ object.last_name }}">
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <p class="form-control">{{ object.user_type }}
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Submit
+                        </button>
+                    </div>
+                </div>
+
+
+            </form>
+            <!-- END Basic Form Elements Content -->
+        </div>
+    </div>
+{% endblock %}

@@ -4,10 +4,11 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-
+from django.views.generic import DetailView
 from authentication.forms import UserLoginForm, UserRegistrationForm
 from authentication.models import CustomUser, UserType
 from authentication.utils import Utils
+from subscriptions.models import Subscription
 
 
 # Create your views here.
@@ -35,6 +36,8 @@ def signup_view(request):
             new_user = form.save(commit=False)
             new_user.set_password(form.cleaned_data['password'])
             new_user.save()
+            sub = Subscription(user=new_user)
+            sub.save()
             Utils.send_verification_email(get_current_site(request), new_user)
             return render(request, 'authentication/signup_done.html')
         return render(request, 'authentication/signup.html', {'form': form})
@@ -58,4 +61,12 @@ def email_verify(request, uidb64):
         user.is_verified = True
         user.user_type = UserType.BASIC
         user.save()
-    return render(request, 'authentication/verification_done.html',{"username":user.username})
+    return render(request, 'authentication/verification_done.html', {"username": user.username})
+
+
+class UserDetails(DetailView):
+    model = CustomUser
+    template_name = "authentication/user_details.html"
+
+    def get_object(self, queryset=None):
+        return self.request.user
