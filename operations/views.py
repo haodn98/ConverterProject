@@ -1,5 +1,3 @@
-import os
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import FileResponse
@@ -159,6 +157,42 @@ def image_to_pdf(request):
     return render(request, 'operations/img_to_pdf.html')
 
 
+@login_required(login_url='/auth/login/')
+def pdf_to_docx(request):
+    try:
+        if request.method == "POST":
+            user = request.user
+            sub = Subscription.objects.get(user=user.id)
+            sub.operation_decrease()
+            file_to_convert = request.FILES.get("formPdfDocFile")
+            if not file_to_convert:
+                messages.error(request, "Please upload the file")
+                return render(request, "operations/pdf_to_docx.html")
+            fs = FileSystemStorage()
+            try:
+                file_extension = Utils.extensions_check(file_to_convert.name, [".pdf"])
+            except TypeError as e:
+                messages.error(request, e)
+                return render(request, 'operations/pdf_to_docx.html')
+            filename = fs.save(f"files/{file_to_convert.name}", file_to_convert)
+            Utils.pdf_to_docx_conv(filename)
+            filename_pure = filename.replace("files/", "").replace(file_extension, '')
+            path = f"output/{filename_pure}.docx"
+            operation = Operation(user=request.user, format_from=file_extension, format_to=".docx",
+                                  file_url=path, )
+            operation.save()
+            fs.delete(filename)
+            messages.success(request, "PDF file was converted to Docx, you can download it in your account")
+            return render(request, 'operations/pdf_to_docx.html')
+    except TypeError as e:
+        messages.error(request, e)
+        return render(request, 'operations/pdf_to_docx.html')
+    except ValueError as e:
+        messages.error(request, e)
+        return render(request, 'operations/pdf_to_docx.html')
+    return render(request, 'operations/pdf_to_docx.html')
+
+
 def pdf_to_doc(request):
     pass
 
@@ -174,7 +208,7 @@ class OperationsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Operation.objects.filter(user=user.id)
+        queryset = Operation.objects.filter(user=user.id).order_by("operation_date")
         return queryset
 
 
@@ -190,6 +224,7 @@ class OperationsDeleteView(LoginRequiredMixin, DeleteView):
         object = self.get_object()
         fs = FileSystemStorage()
         fs.delete(object.file_url)
+        messages.success(request, "Operation was deleted successfully")
         return super().delete(request, *args, **kwargs)
 
 

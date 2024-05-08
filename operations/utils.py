@@ -4,6 +4,7 @@ import pythoncom
 from docx2pdf import convert as converter_doc
 from win32com import client
 from pptxtopdf import convert as converter_pptx
+from pdf2docx import Converter
 from img2pdf import convert as image_converter
 
 
@@ -35,6 +36,13 @@ class Utils:
         filename = file.replace("files/", "").split(".")[0]
         with open(f"output/{filename}.pdf", "wb") as f:
             f.write(image_converter(file))
+
+    @staticmethod
+    def pdf_to_docx_conv(file):
+        cv = Converter(file)
+        filename = file.replace("files/", "").split(".")[0]
+        cv.convert(f"output/{filename}.docx", start=0, end=None)
+        cv.close()
 
     @staticmethod
     def extensions_check(file_name, allowed_extensions):

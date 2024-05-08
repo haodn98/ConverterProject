@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import check_password
 
-from authentication.models import CustomUser
+from authentication.models import CustomUser, UserType
 
 
 class UserLoginForm(forms.Form):
@@ -76,3 +76,26 @@ class UserRegistrationForm(forms.ModelForm):
         if data['password'] != data['password2']:
             raise forms.ValidationError("Passwords are different")
         return data['password']
+
+
+class UserUpdateForm(forms.ModelForm):
+    username = forms.CharField(label="Username",
+                               widget=forms.TextInput(attrs={'class': "form-control", 'readonly': "True"}))
+    first_name = forms.CharField(label="First name",
+                                 widget=forms.TextInput(
+                                     attrs={'class': 'form-control', 'placeholder': 'First name'}))
+
+    last_name = forms.CharField(label="Last name ",
+                                widget=forms.TextInput(
+                                    attrs={'class': 'form-control', 'placeholder': 'Last name'}))
+
+    email = forms.CharField(label="Email",
+                            widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': "Email"}))
+
+    user_type = forms.CharField(label="User type",
+                                widget=forms.TextInput(attrs={'readonly': "True"}))
+    sub_expire_date = forms.DateField(label='Sub expire date/Num of operations left', required=False, disabled=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'email', 'user_type']

@@ -28,7 +28,7 @@ class Subscription(models.Model):
         raise ValueError("You don`t have more operations please update your plan")
 
     def sub_update(self, num_of_days):
-        self.sub_expire_date += num_of_days
+        self.sub_expire_date += datetime.timedelta(days=num_of_days)
         return self.sub_expire_date
 
 

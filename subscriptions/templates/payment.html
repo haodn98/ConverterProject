@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form class="container" method="post">
+        {% csrf_token %}
+        <h2>Choose your plan:</h2>
+        <br>
+        <div class="form-check">
+            <div class="input-group">
+                <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="radio" value="min" name="package"
+                           aria-label="Radio button for following text input">
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with radio button"
+                       placeholder="Minimum package, increase you sub for 10 days" readonly>
+            </div>
+        </div>
+        <br>
+        <div class="form-check">
+            <div class="input-group">
+                <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="radio" value="mid" name="package"
+                           aria-label="Radio button for following text input">
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with radio button"
+                       placeholder="Middle package, increase you sub for 30 days" readonly>
+            </div>
+        </div>
+        <br>
+        <div class="form-check">
+            <div class="input-group">
+                <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="radio" value="max" name="package"
+                           aria-label="Radio button for following text input">
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with radio button"
+                       placeholder="Maximum package, increase you sub for 90 days" readonly>
+            </div>
+        </div>
+        <div class="mt-5 text-center">
+            <button class="btn btn-dark profile-button" type="Submit">Update</button>
+        </div>
+    </form>
+{% endblock %}
+
